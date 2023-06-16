@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: viz-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: viz-client
+  template:
+    metadata:
+      labels:
+        app: viz-client
+    spec:
+      imagePullSecrets:
+        - name: "k8s-registry-creds"
+      containers:
+      - name: nginx
+        image: {{ .Values.image }}
+        imagePullPolicy: "Always"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 80
+          name: http
